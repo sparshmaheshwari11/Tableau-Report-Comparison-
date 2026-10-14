@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f6f9ff">
+  <title>Tableau Workbook Validator</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar">
+      <a class="brand" href="/">
+        <span class="brand-mark"><svg viewBox="0 0 32 32" aria-hidden="true"><path d="M5 24V8M5 24h23M10 19l5-6 5 3 7-9" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/><circle cx="27" cy="7" r="2" fill="currentColor"/></svg></span>
+        <span><strong>Workbook Validator</strong><small>TABLEAU QUALITY TOOLS</small></span>
+      </a>
+      <div class="side-label">WORKSPACE</div>
+      <button class="nav-item active" type="button"><span class="nav-icon">↔</span> Compare workbooks</button>
+      <div class="side-note">
+        <div class="note-icon">✦</div>
+        <strong>Reliable report checks</strong>
+        <p>Compare workbook metadata, data values, sheets, dashboards and visual evidence.</p>
+      </div>
+      <div class="sidebar-footer"><span class="status-dot"></span> Local comparison workspace</div>
+    </aside>
+
+    <main class="main-content">
+      <header class="topbar">
+        <div><div class="eyebrow">TABLEAU / VALIDATION</div><h1>Workbook comparison</h1></div>
+        <div class="topbar-pill"><span class="status-dot"></span> Secure session</div>
+      </header>
+
+      <section class="intro">
+        <div>
+          <h2>Find differences that matter.</h2>
+          <p>Connect to Tableau, choose the original and updated dashboards, and run your existing validation checks.</p>
+        </div>
+        <div class="intro-art" aria-hidden="true"><span class="art-card card-a">Aa</span><span class="art-card card-b">123</span><span class="art-line"></span><span class="art-dot"></span></div>
+      </section>
+
+      <div id="globalMessage" class="message hidden" role="status"></div>
+
+      <section class="panel" id="authPanel">
+        <div class="panel-heading">
+          <div class="step-number">01</div>
+          <div><h3>Connect to Tableau</h3><p>Enter your Tableau Server or Cloud details and verify the connection.</p></div>
+          <span class="step-status" id="authStatus">Not connected</span>
+        </div>
+        <form id="authForm">
+          <div class="form-grid">
+            <label class="field field-wide"><span>Tableau Server URL <b>*</b></span><input id="serverUrl" type="url" placeholder="https://tableau.company.com" required autocomplete="url"><small>Enter the site root, not a dashboard URL.</small></label>
+            <label class="field"><span>Site content URL / Site ID</span><input id="siteId" type="text" placeholder="e.g. marketing (leave blank for Default)"><small>Use the site content URL, not the site display name.</small></label>
+            <label class="field"><span>REST API version</span><select id="apiVersion"><option>3.19</option><option>3.18</option><option>3.17</option><option>3.16</option><option>3.15</option><option>3.14</option><option>3.13</option></select></label>
+            <label class="field"><span>PAT name <b>*</b></span><input id="patName" type="text" placeholder="Personal Access Token name" required autocomplete="off"></label>
+            <label class="field"><span>PAT secret <b>*</b></span><div class="secret-wrap"><input id="patSecret" type="password" placeholder="Paste your PAT secret" required autocomplete="new-password"><button id="toggleSecret" class="reveal-btn" type="button" aria-label="Show or hide PAT secret">Show</button></div><small>Used only for this session. Do not share it with anyone.</small></label>
+          </div>
+          <div class="form-actions"><span class="privacy-note"><span>♢</span> Credentials are not saved in browser storage.</span><button class="btn btn-primary" id="testConnection" type="submit"><span class="btn-label">Verify connection</span><span class="btn-spinner hidden"></span><span>→</span></button></div>
+        </form>
+      </section>
+
+      <section class="panel locked" id="comparePanel" aria-disabled="true">
+        <div class="panel-heading">
+          <div class="step-number">02</div>
+          <div><h3>Select dashboards</h3><p>Paste the two Tableau view or workbook links you want to compare.</p></div>
+          <span class="step-status muted" id="compareStatus">Waiting for connection</span>
+        </div>
+        <form id="compareForm">
+          <div class="comparison-inputs">
+            <label class="workbook-card">
+              <span class="workbook-top"><span class="workbook-icon original">A</span><span class="file-tag">REFERENCE</span></span>
+              <strong>Original dashboard</strong><span class="workbook-description">The version to compare against</span>
+              <input id="sourceUrl" type="url" placeholder="https://.../#/views/Workbook/Sheet" required disabled>
+            </label>
+            <div class="compare-symbol">↔</div>
+            <label class="workbook-card">
+              <span class="workbook-top"><span class="workbook-icon updated">B</span><span class="file-tag">UPDATED</span></span>
+              <strong>Updated dashboard</strong><span class="workbook-description">The version you want to validate</span>
+              <input id="targetUrl" type="url" placeholder="https://.../#/views/Workbook/Sheet" required disabled>
+            </label>
+          </div>
+          <div class="options-row">
+            <label class="check-option"><input id="compareValues" type="checkbox" checked disabled><span><strong>Compare data values</strong><small>Compare values returned by Tableau views, where available.</small></span></label>
+            <label class="field tolerance-field"><span>Numeric tolerance</span><input id="tolerance" type="number" min="0" max="1" step="0.0001" value="0.001" disabled></label>
+          </div>
+          <div class="form-actions"><span class="privacy-note">Both dashboards must be accessible to the authenticated Tableau account.</span><button class="btn btn-primary" id="runCompare" type="submit" disabled><span class="btn-label">Run comparison</span><span class="btn-spinner hidden"></span><span>→</span></button></div>
+        </form>
+      </section>
+
+      <section class="results-section hidden" id="resultsSection">
+        <div class="results-header"><div><div class="eyebrow">VALIDATION COMPLETE</div><h2>Comparison results</h2><p id="resultsSubtitle">Review differences found between the two workbooks.</p></div><a id="downloadReport" class="btn btn-secondary" href="#"><span>↓</span> Download full report</a></div>
+        <div class="summary-grid">
+          <article class="summary-card"><span class="summary-icon blue">≠</span><span class="summary-label">Total differences</span><strong id="totalDiffs">0</strong><small>Across all checks</small></article>
+          <article class="summary-card"><span class="summary-icon red">!</span><span class="summary-label">Errors</span><strong id="totalErrors">0</strong><small>High-priority differences</small></article>
+          <article class="summary-card"><span class="summary-icon amber">◇</span><span class="summary-label">Warnings</span><strong id="totalWarnings">0</strong><small>Review recommended</small></article>
+          <article class="summary-card"><span class="summary-icon green">✓</span><span class="summary-label">Check categories</span><strong id="categoriesCount">4</strong><small>Workbook, datasource, sheets, values</small></article>
+        </div>
+        <div class="results-panel">
+          <div class="tabs" role="tablist">
+            <button class="tab active" data-tab="workbook" type="button">Workbook <span id="workbookCount">0</span></button>
+            <button class="tab" data-tab="datasource" type="button">Datasources <span id="datasourceCount">0</span></button>
+            <button class="tab" data-tab="sheet" type="button">Sheets & dashboards <span id="sheetCount">0</span></button>
+            <button class="tab" data-tab="value" type="button">Values <span id="valueCount">0</span></button>
+          </div>
+          <div id="diffContent" class="diff-content"></div>
+        </div>
+        <div class="results-footnote">A detected difference is not automatically proof that the updated value is incorrect. Confirm against a trusted business rule or expected result.</div>
+      </section>
+
+      <footer class="page-footer"><span>Tableau Workbook Validator</span><span>Powered by your existing comparison engine</span></footer>
+    </main>
+  </div>
+  <script src="/app.js"></script>
+</body>
+</html>

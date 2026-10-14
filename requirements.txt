@@ -1,0 +1,25 @@
+# Tableau Server / Cloud API
+tableauserverclient>=0.25.0
+
+# Data processing and reports
+pandas>=2.0.0
+numpy>=1.24.0
+openpyxl>=3.1.2
+deepdiff>=6.7.0
+
+# HTTP and utilities
+requests>=2.31.0
+urllib3>=2.0.0
+certifi>=2024.2.2
+python-dotenv>=1.0.0
+
+# Logging and CLI reports
+rich>=13.7.0
+tabulate>=0.9.0
+colorlog>=6.8.0
+jinja2>=3.1.2
+Pillow>=10.0.0
+
+fastapi>=0.110.0
+uvicorn[standard]>=0.27.0
+python-multipart>=0.0.9

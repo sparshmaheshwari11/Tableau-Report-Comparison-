@@ -1,0 +1,34 @@
+{
+  "tableau": {
+    "server_url": "",
+    "site_id": "",
+    "pat_name": "",
+    "pat_value": "",
+    "api_version": "3.19"
+  },
+  "comparison": {
+    "source_workbook_url": "",
+    "target_workbook_url": "",
+    "value_comparison_enabled": true,
+    "value_comparison_max_rows": 500000,
+    "numeric_tolerance": 0.001,
+    "string_case_sensitive": false,
+    "pagination_page_size": 1000
+  },
+  "output": {
+    "output_dir": "./output",
+    "csv_report": true,
+    "json_report": true,
+    "excel_report": true,
+    "console_summary": true,
+    "log_level": "INFO",
+    "log_file": "./output/validation.log"
+  },
+  "performance": {
+    "request_timeout_seconds": 120,
+    "max_retries": 3,
+    "retry_backoff_seconds": 5,
+    "parallel_sheet_comparison": false,
+    "max_workers": 4
+  }
+}
